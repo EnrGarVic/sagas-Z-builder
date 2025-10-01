@@ -129,12 +129,12 @@ export class ArmyStore {
   getAvailableSlots(unit: UnitInArmy): string[] {
     const total = [...unit.barraDeMejoras];
     const used = unit.upgrades.filter((up) => !up.noOcupaSlot).map((up) => up.tipo);
-    
+
     for (const upgradeType of used) {
       const i = total.indexOf(upgradeType);
       if (i > -1) total.splice(i, 1);
     }
-    
+
     return total;
   }
 
@@ -179,44 +179,44 @@ export class ArmyStore {
   exportArmy() {
     const limit = this.selectedPointLimit();
     const doc = new jsPDF();
-    
+
     // Configurar fuente y título
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.text(`${this.armyName()}`, 20, 30);
-    
+
     // Información del ejército
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
     doc.text(`Facción: ${this.selectedFaction()}`, 20, 45);
     doc.text(`Puntos: ${this.totalPoints()} / ${limit}`, 20, 55);
-    
+
     // Línea separadora
     doc.setLineWidth(0.5);
     doc.line(20, 65, 190, 65);
-    
+
     // Título de unidades
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('UNIDADES', 20, 80);
-    
+
     let yPosition = 95;
-    
+
     this.armyList().forEach((unit) => {
       // Verificar si necesitamos una nueva página
       if (yPosition > 250) {
         doc.addPage();
         yPosition = 30;
       }
-      
+
       let unitCost = unit.coste;
-      
+
       // Nombre de la unidad
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.text(`• ${unit.nombre} (${unit.subtitulo}) - ${unit.coste} pts`, 25, yPosition);
       yPosition += 10;
-      
+
       // Mejoras de la unidad
       if (unit.upgrades.length > 0) {
         doc.setFont('helvetica', 'normal');
@@ -227,16 +227,18 @@ export class ArmyStore {
           yPosition += 8;
         });
       }
-      
+
       // Coste total de la unidad
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(9);
       doc.text(`  (Coste Total de Unidad: ${unitCost} pts)`, 30, yPosition);
       yPosition += 15;
     });
-    
+
     // Generar el archivo PDF y descargarlo
-    const fileName = `${this.armyName().replace(/[^a-z0-9]/gi, '_').toLowerCase()}_sagas_z.pdf`;
+    const fileName = `${this.armyName()
+      .replace(/[^a-z0-9]/gi, '_')
+      .toLowerCase()}_sagas_z.pdf`;
     doc.save(fileName);
   }
 
