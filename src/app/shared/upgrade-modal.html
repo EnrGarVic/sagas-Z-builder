@@ -1,0 +1,32 @@
+<div class="modal-overlay" (click)="store.closeUpgradeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Añadir Mejora a {{ store.selectedUnitForUpgrade()?.nombre }}</h3>
+      <button class="btn btn-danger" (click)="store.closeUpgradeModal()">Cerrar</button>
+    </div>
+    <div class="modal-body">
+      @if (store.availableUpgradesForSelectedUnit().length === 0) {
+      <p style="text-align: center; color: #888; margin-top: 2rem">
+        No hay mejoras compatibles disponibles para esta unidad.
+      </p>
+      } @for (upgrade of store.availableUpgradesForSelectedUnit(); track upgrade.id) {
+      <div class="upgrade-option" (click)="store.addUpgradeToUnit(upgrade)">
+        <div>
+          <h4>
+            {{ upgrade.nombre }}
+            <span style="font-size: 0.9rem; color: #ccc">({{ upgrade.coste }} pts)</span>
+          </h4>
+          <p class="upgrade-description">
+            {{ upgrade.descripcion }}
+          </p>
+          <p>
+            <strong>Tipo:</strong> {{ upgrade.tipo }} | <strong>Restricción:</strong>
+            {{ upgrade.restriccion }}
+          </p>
+        </div>
+        <span style="font-size: 1.5rem">+</span>
+      </div>
+      }
+    </div>
+  </div>
+</div>

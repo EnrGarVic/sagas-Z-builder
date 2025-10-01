@@ -1,0 +1,15 @@
+<div class="army-header">
+  <h2>{{ store.armyName() }} ({{ store.selectedFaction() }})</h2>
+  <div
+    class="points-display"
+    [class.points-valid]="store.selectedPointLimit() && store.totalPoints() <= store.selectedPointLimit()!"
+    [class.points-invalid]="store.selectedPointLimit() && store.totalPoints() > store.selectedPointLimit()!"
+  >
+    {{ store.totalPoints() }} / {{ store.selectedPointLimit() }} Puntos
+  </div>
+  <div class="validation-errors">
+    @for (error of store.validationErrors(); track error) {
+    <div class="validation-error">{{ error }}</div>
+    }
+  </div>
+</div>

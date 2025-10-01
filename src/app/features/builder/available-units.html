@@ -1,0 +1,24 @@
+<div class="card">
+  <h3>Unidades Disponibles</h3>
+  <div class="panel">
+    @for (unit of store.availableUnits(); track unit.id) {
+    <div class="unit-card">
+      <div class="unit-info">
+        <h4>
+          {{ unit.nombre }}
+          <span style="font-size: 0.9rem; color: #ccc">({{ unit.coste }} pts)</span>
+        </h4>
+        <p>{{ unit.subtitulo }}</p>
+        <p><strong>Categoría:</strong> {{ unit.categoria }}</p>
+      </div>
+      <button
+        class="btn btn-secondary"
+        (click)="store.addUnit(unit)"
+        [disabled]="store.isUnitAddDisabled(unit)"
+      >
+        Añadir
+      </button>
+    </div>
+    }
+  </div>
+</div>

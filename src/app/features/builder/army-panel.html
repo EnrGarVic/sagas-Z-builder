@@ -1,0 +1,60 @@
+<div class="card">
+  <h3>Ejército Actual</h3>
+  <div class="panel">
+    @if (store.armyList().length === 0) {
+    <p style="text-align: center; color: #888; margin-top: 2rem">
+      Añade unidades desde el panel de la izquierda para empezar.
+    </p>
+    } @for (unit of store.armyList(); track unit.uid) {
+    <div class="army-unit-card">
+      <div class="army-unit-header">
+        <div class="unit-info">
+          <h4>
+            {{ unit.nombre }}
+            <span style="font-size: 0.9rem; color: #ccc">({{ unit.coste }} pts)</span>
+          </h4>
+          <p>{{ unit.subtitulo }}</p>
+        </div>
+        <button class="btn btn-danger" (click)="store.removeUnit(unit.uid)">Eliminar</button>
+      </div>
+
+      <div>
+        <p><strong>Ranuras de Mejora Disponibles:</strong></p>
+        <div class="upgrade-slot-bar">
+          @if (store.getAvailableSlots(unit).length === 0) {
+          <span class="upgrade-slot" style="background: #333">Ninguna</span>
+          } @for (slot of store.getAvailableSlots(unit); track $index) {
+          <span class="upgrade-slot">{{ slot }}</span>
+          }
+        </div>
+      </div>
+
+      @if (unit.upgrades.length > 0) {
+      <div class="added-upgrades-list">
+        <h5>Mejoras Equipadas:</h5>
+        @for (upgrade of unit.upgrades; track upgrade.id + $index) {
+        <div class="added-upgrade">
+          <p>{{ upgrade.nombre }} (+{{ upgrade.coste }} pts)</p>
+          <button
+            class="btn btn-danger"
+            style="padding: 0.2rem 0.5rem; font-size: 0.8rem"
+            (click)="store.removeUpgradeFromUnit(unit.uid, upgrade.id)"
+          >
+            X
+          </button>
+        </div>
+        }
+      </div>
+      }
+
+      <button
+        class="btn"
+        style="width: 100%; margin-top: 1rem"
+        (click)="store.openUpgradeModal(unit)"
+      >
+        Añadir Mejora
+      </button>
+    </div>
+    }
+  </div>
+</div>

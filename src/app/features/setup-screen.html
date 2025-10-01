@@ -1,0 +1,52 @@
+<div class="screen">
+  <h2 class="title">Configuración del Ejército</h2>
+  <div class="card" style="width: 100%; max-width: 450px">
+    <div class="form-group">
+      <label for="armyName" class="form-label">Nombre del Ejército</label>
+      <input
+        id="armyName"
+        type="text"
+        class="form-control"
+        [value]="store.armyName()"
+        (input)="onArmyNameChange($event)"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="faction" class="form-label">Selecciona una Facción</label>
+      <select
+        id="faction"
+        class="form-control"
+        (change)="onFactionChange($event)"
+      >
+        <option [value]="null" disabled selected>-- Elige una facción --</option>
+        @for (faction of store.factions(); track faction) {
+        <option [value]="faction">{{ faction }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="pointLimit" class="form-label">Límite de Puntos</label>
+      <select
+        id="pointLimit"
+        class="form-control"
+        (change)="onPointLimitChange($event)"
+      >
+        <option [value]="null" disabled selected>-- Elige un límite --</option>
+        @for (limit of store.pointLimits; track limit.value) {
+        <option [value]="limit.value">{{ limit.label }}</option>
+        }
+      </select>
+    </div>
+
+    <button
+      class="btn"
+      style="width: 100%"
+      (click)="store.createArmy()"
+      [disabled]="!store.selectedFaction() || !store.selectedPointLimit() || !store.armyName()"
+    >
+      Empezar a Construir
+    </button>
+  </div>
+</div>
